@@ -1,6 +1,8 @@
+[English](web-assistants.md) · 简体中文
+
 # 在普通 AI 网页里制作或优化 PPT
 
-支持自定义技能的网页可直接导入平台包。在只支持聊天与附件的网页中，打开配套的 slidecraft.html。在本地网页中下载 PPTX；AI 聊天用来判断设计和撰写大纲。下面的两条提示可复制，并随附技能中的 references/formats.md 和 references/design.md。
+支持自定义技能的网页可直接导入平台包。在只支持聊天与附件的网页中，打开配套的 slidecraft.html 并在右上角选择「简体中文」。在本地网页中下载 PPTX；AI 聊天用来判断设计和撰写大纲。下面的两条提示可复制，并随附技能中的 references/formats.zh-CN.md 和 references/design.zh-CN.md。
 
 ## 从材料制作
 请用随附 Slidecraft 文件接口，根据我的材料制作演示大纲，返回有效的 deck.json。交代受众、要做的决策、每页标题和支持证据。图表保留可编辑数据，百分数使用小数和 numberFormat，来源写页脚或备注。材料没有提供的数字不要补造。若需要对照图，我会补充对应 asset 图片。我的材料如下……

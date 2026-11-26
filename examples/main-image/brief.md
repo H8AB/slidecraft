@@ -1,9 +1,14 @@
-# 折页家居｜收纳箱主图 A/B 测试
-这里的品牌、商品、图片与交易数据均为虚构，用于演示制作与改版。受众是电商运营、商品和设计团队。周会上要决定，是否扩大场景图在搜索列表的测试流量。
+# Fold Home | Search listing image test
 
-同一款米白棉麻收纳箱，价格、标题、优惠和落地详情页一致。搜索列表按访客固定随机分组，A 展示白底商品图，B 展示衣柜场景图，观察 7 天。下单按点击后 24 小时归因，末日曝光也跟满 24 小时。统计单位为事件，同一访客可能有多次曝光。
-- A 白底图：20,000 次曝光，720 次详情点击，36 个归因订单。
-- B 场景图：20,000 次曝光，900 次详情点击，45 个归因订单。
-- 点击率 = 点击数 / 曝光数，A 3.6%，B 4.5%，差值 +0.9 个百分点，相对提升 25%。
-- 点击后下单率 = 归因订单数 / 点击数，两组均为 5.0%。
-- 运营提案：保留白底图对照，扩大场景图测试流量；同时观察点击率与每千次曝光订单数，复核一周后再决定是否全量替换。
+Prepare a five-slide review for the merchandising, creative and analytics teams. They need to decide whether to expand a wardrobe image test for one linen storage box.
+
+For seven days, visitors were assigned to either a white-background product image (A) or a wardrobe image (B) in search results. The price, listing title, offer and detail page were identical. Each variant received 20,000 impressions. Visitors could generate more than one impression.
+
+| Image | Product clicks | Orders within 24 hours |
+| --- | ---: | ---: |
+| A · White background | 720 | 36 |
+| B · Wardrobe setting | 900 | 45 |
+
+Click-through rate was 3.6% for A and 4.5% for B. The increase was 0.9 percentage points, or 25% relative to A. Orders per click were 5.0% for both variants. Clicks on the last day received a full 24-hour attribution window.
+
+The team proposes testing for one more week with a concurrent white-background control. Track click-through rate and orders per 1,000 impressions before a full rollout. The business, product and data are fictional. Both product images were generated for this example.

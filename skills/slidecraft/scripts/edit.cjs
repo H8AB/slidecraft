@@ -21,21 +21,21 @@ function partPath(path) {
   const parts=[];
   for(const item of path.split('/')) {
     if(!item || item==='.') continue;
-    if(item==='..') { if(!parts.length) throw Error('无效的部件路径'); parts.pop(); }
+    if(item==='..') { if(!parts.length) throw Error('Invalid document part path.'); parts.pop(); }
     else parts.push(item);
   }
   return parts.join('/');
 }
 async function open(bytes) {
   const zip=await JSZip.loadAsync(bytes);
-  async function xml(path) { const part=zip.file(path); if(!part) throw Error('缺少 PPTX 部件 '+path); return parse(await part.async('string')); }
+  async function xml(path) { const part=zip.file(path); if(!part) throw Error('Missing PPTX part: '+path); return parse(await part.async('string')); }
   const pres=await xml('ppt/presentation.xml'), rels=await xml('ppt/_rels/presentation.xml.rels');
   const paths=new Map(children(rels.documentElement).filter(r=>r.getAttribute('TargetMode')!=='External').map(r=>{
     const t=r.getAttribute('Target'); return [r.getAttribute('Id'),partPath(t.startsWith('/')?t:'ppt/'+t)];
   }));
   const parts=desc(pres,'p','sldId').map(el=>paths.get(el.getAttributeNS(ns.r,'id')));
   const size=desc(pres,'p','sldSz')[0];
-  if(!size || parts.some(p=>!p)) throw Error('仅支持常见的 Transitional PPTX');
+  if(!size || parts.some(p=>!p)) throw Error('This file requires a standard Transitional PPTX structure.');
   return {zip,xml,parts,width:+size.getAttribute('cx')/EMU,height:+size.getAttribute('cy')/EMU,
     signed:Object.keys(zip.files).some(p=>/^_xmlsignatures\//i.test(p))};
 }
@@ -63,7 +63,7 @@ async function inspect(bytes) {
   }
   return {source:key(bytes),width:f.width,height:f.height,signed:f.signed,slides};
 }
-function colorCode(s) { if(!/^[0-9a-f]{6}$/i.test(s||'')) throw Error('颜色需要六位 HEX'); return s.toUpperCase(); }
+function colorCode(s) { if(!/^[0-9a-f]{6}$/i.test(s||'')) throw Error('Use a six-digit hex color.'); return s.toUpperCase(); }
 function fill(doc,color) {
   const solid=make(doc,'a','solidFill'),rgb=make(doc,'a','srgbClr');
   rgb.setAttribute('val',colorCode(color)); solid.appendChild(rgb); return solid;
@@ -74,9 +74,9 @@ function bg(doc,color) {
   if(old) cs.replaceChild(el,old); else cs.insertBefore(el,cs.firstChild);
 }
 function style(doc,shape,s) {
-  if(shape.kind!=='sp' || !first(shape.e,'p','txBody')) throw Error('只有普通文本形状可以更改字形');
-  if(s.size!==undefined && (!Number.isFinite(s.size)||s.size<1||s.size>300)) throw Error('字号应为 1–300 pt');
-  if(s.bold!==undefined && typeof s.bold!=='boolean') throw Error('bold 需要布尔值');
+  if(shape.kind!=='sp' || !first(shape.e,'p','txBody')) throw Error('Only standard text shapes can be styled.');
+  if(s.size!==undefined && (!Number.isFinite(s.size)||s.size<1||s.size>300)) throw Error('Choose a font size from 1 to 300 points.');
+  if(s.bold!==undefined && typeof s.bold!=='boolean') throw Error('Use true or false for bold.');
   for(const run of desc(shape.e,'a','r')) {
     let pr=first(run,'a','rPr');
     if(!pr){pr=make(doc,'a','rPr');run.insertBefore(pr,run.firstChild);}
@@ -90,31 +90,31 @@ function style(doc,shape,s) {
   }
 }
 function place(o,box,f) {
-  if(!o.xf || !o.box || o.kind==='grpSp') throw Error('继承定位或组合对象无法移动');
-  if(!Array.isArray(box)||box.length!==4||!box.every(Number.isFinite)) throw Error('box 需要四个坐标，单位英寸');
+  if(!o.xf || !o.box || o.kind==='grpSp') throw Error('The runner cannot move grouped or inherited objects.');
+  if(!Array.isArray(box)||box.length!==4||!box.every(Number.isFinite)) throw Error('A box requires four coordinates in inches.');
   const [x,y,w,h]=box;
-  if(x<0||y<0||w<=0||h<0||x+w>f.width+.001||y+h>f.height+.001) throw Error('目标位置超出画布');
+  if(x<0||y<0||w<=0||h<0||x+w>f.width+.001||y+h>f.height+.001) throw Error('The target box is outside the slide.');
   const pos=first(o.xf,'a','off'),ext=first(o.xf,'a','ext');
   for(const [el,k,v] of [[pos,'x',x],[pos,'y',y],[ext,'cx',w],[ext,'cy',h]]) el.setAttribute(k,String(Math.round(v*EMU)));
 }
 async function apply(bytes,plan) {
-  if(plan.source!==key(bytes)) throw Error('方案与源文件不匹配，请重新 inspect');
+  if(plan.source!==key(bytes)) throw Error('This plan belongs to a different file. Inspect the current file and create a new plan.');
   const f=await open(bytes);
-  if(f.signed) throw Error('签名演示文稿只支持诊断');
-  if(!Array.isArray(plan.slides)||!plan.slides.length) throw Error('方案中没有可执行改动');
+  if(f.signed) throw Error('Signed presentations are available for inspection only.');
+  if(!Array.isArray(plan.slides)||!plan.slides.length) throw Error('The plan contains no edits.');
   const visited=new Set();
   for(const step of plan.slides){
     const path=f.parts[step.slide-1];
-    if(!Number.isInteger(step.slide)||!path||visited.has(path)) throw Error('页码无效或重复');
+    if(!Number.isInteger(step.slide)||!path||visited.has(path)) throw Error('Invalid or repeated slide number.');
     visited.add(path);
     const doc=await f.xml(path);
-    if(complex(doc)) throw Error('第 '+step.slide+' 页含复杂对象，仅支持诊断');
+    if(complex(doc)) throw Error('Complex slide is available for inspection only: '+step.slide);
     if(step.background) bg(doc,step.background);
     const items=objects(doc), objs=new Map(items.map(o=>[o.id,o]));
-    if(objs.size!==items.length) throw Error('页内对象编号重复，无法安全应用计划');
+    if(objs.size!==items.length) throw Error('Duplicate object IDs on this slide prevent an unambiguous edit.');
     for(const op of step.objects||[]){
       const o=objs.get(String(op.id));
-      if(!o) throw Error('找不到对象 '+op.id);
+      if(!o) throw Error('Missing object: '+op.id);
       if(op.box) place(o,op.box,f);
       if(['size','bold','color'].some(k=>op[k]!==undefined)) style(doc,o,op);
     }

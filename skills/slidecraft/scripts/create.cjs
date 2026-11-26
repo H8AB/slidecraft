@@ -4,32 +4,33 @@ const {finalizeCreated} = require('./edit.cjs');
 const ink = '173E38', paper = 'F7F4E9', teal = '14675E', orange = 'D95631', muted = '50645E';
 const kinds = ['cover','metrics','chart','table','actions','comparison'];
 function requiredString(value, label) {
-  if (typeof value !== 'string' || !value.trim()) throw Error('需要非空文本：' + label);
+  if (typeof value !== 'string' || !value.trim()) throw Error('Expected nonempty text for ' + label);
 }
 function validate(spec) {
-  if (!Array.isArray(spec?.slides) || !spec.slides.length) throw Error('slides 至少需要一页');
+  if (!Array.isArray(spec?.slides) || !spec.slides.length) throw Error('Add at least one slide.');
   for (const [i,s] of spec.slides.entries()) {
-    if (!s || !kinds.includes(s.kind)) throw Error('第 ' + (i+1) + ' 页类型无效');
+    if (!s || !kinds.includes(s.kind)) throw Error('Unsupported slide kind on slide ' + (i+1));
     requiredString(s.title, 'title');
     if (s.kind === 'metrics' || s.kind === 'actions') {
-      if (!Array.isArray(s.items) || !s.items.length || s.items.length > 3) throw Error('items 需要 1 至 3 项');
+      if (!Array.isArray(s.items) || !s.items.length || s.items.length > 3) throw Error('Add one to three items.');
       for (const p of s.items) { requiredString(p.label, 'label'); requiredString(p[s.kind === 'metrics' ? 'value' : 'detail'], 'value / detail'); }
     }
-    if (s.kind === 'comparison' && (!s.asset || !Array.isArray(s.captions) || s.captions.length !== 2)) throw Error('对照页需要 asset 与两条 captions');
+    if (s.kind === 'comparison' && (!s.asset || !Array.isArray(s.captions) || s.captions.length !== 2)) throw Error('A comparison slide needs an asset and two captions.');
     if (s.kind === 'chart' && (!Array.isArray(s.values) || !s.values.length || s.values.length > 8 ||
         !Array.isArray(s.labels) || s.labels.length !== s.values.length || !s.values.every(Number.isFinite) ||
-        !s.labels.every(v => typeof v === 'string'))) throw Error('图表需要 1 至 8 组配对标签与数值');
+        !s.labels.every(v => typeof v === 'string'))) throw Error('Supply one to eight matching chart labels and values.');
     if (s.kind === 'table' && (!Array.isArray(s.rows) || s.rows.length < 2 || s.rows.length > 6 ||
         !Array.isArray(s.rows[0]) || !s.rows[0].length || s.rows[0].length > 4 ||
-        !s.rows.every(r => Array.isArray(r) && r.length === s.rows[0].length && r.every(v => typeof v === 'string')))) throw Error('表格需要 2–6 行、1–4 列且各行等长');
+        !s.rows.every(r => Array.isArray(r) && r.length === s.rows[0].length && r.every(v => typeof v === 'string')))) throw Error('Use two to six table rows and one to four columns with equal row lengths.');
   }
 }
 async function create(spec, draft = false, assets = {}) {
   validate(spec);
   const ppt = new pptxgen();
   ppt.layout = 'LAYOUT_WIDE'; ppt.author = spec.series || 'Slidecraft'; ppt.title = spec.slides[0].title;
-  const font = spec.font || 'Microsoft YaHei';
-  ppt.theme = {headFontFace:font, bodyFontFace:font, lang:'zh-CN'};
+  const lang = spec.lang || (/\p{Script=Han}/u.test(JSON.stringify(spec.slides)) ? 'zh-CN' : 'en-US');
+  const font = spec.font || (lang.startsWith('zh') ? 'Microsoft YaHei' : 'Arial');
+  ppt.theme = {headFontFace:font, bodyFontFace:font, lang};
   for (const [index,s] of spec.slides.entries()) {
     const page = ppt.addSlide();
     const cover = s.kind === 'cover'; const dark = !draft && (cover || s.kind === 'actions');
@@ -39,7 +40,7 @@ async function create(spec, draft = false, assets = {}) {
       if (str === undefined || str === '') return;
       page.addText(String(str),{x:box[0],y:box[1],w:box[2],h:box[3],fontFace:font,fontSize:size,color,
         margin:0,breakLine:false,valign:'mid',align:'left',paraSpaceAfter:0,paraSpaceBefore:0,
-        lang:'zh-CN',objectName:name,...opts});
+        lang,objectName:name,...opts});
     }
     function rule(name,x,y,w,color) {
       page.addShape(ppt.ShapeType.line,{x,y,w,h:0,line:{color,width:1},objectName:name});
@@ -52,15 +53,15 @@ async function create(spec, draft = false, assets = {}) {
     if (cover) {
       const photo=Boolean(s.asset);
       if(photo){
-        if(!assets[s.asset]) throw Error('缺少封面图片');
+        if(!assets[s.asset]) throw Error('Missing cover image.');
         const side=draft?3.3:5.38;
         page.addImage({data:assets[s.asset],x:draft?8.55:7.23,y:draft?2.15:1.2,w:side,h:side,objectName:'hero-photo',altText:s.title});
       }
       const plainCover = !photo && !s.display;
       const titleBox = plainCover ? [.72,2.05,11.88,1.78] : draft ? [1,1.5,7.35,.85] : [.7,1.58,6.45,1.1];
       const subtitleBox = plainCover ? [.76,4.17,11.68,1.18] : draft ? [1,2.65,7.3,.7] : [.76,2.88,6.38,.72];
-      type('title',s.title,titleBox,draft?36:54,draft?'333333':paper,{bold:true});
-      type('subtitle',s.subtitle,subtitleBox,draft?22:27,draft?'333333':sub);
+      type('title',s.title,titleBox,draft?34:lang.startsWith('en')?40:54,draft?'333333':paper,{bold:true});
+      type('subtitle',s.subtitle,subtitleBox,draft?22:lang.startsWith('en')?22:27,draft?'333333':sub);
       type('display',s.display,draft?[1,4.12,6,.82]:photo?[.72,4.33,5.9,1.22]:[7.35,2.02,5.2,1.65],draft?34:photo?67:87,draft?'333333':'F1AF85',{fontFace:'Arial',bold:true});
       type('caption',s.caption,draft?[1,5.13,7,.47]:photo?[.79,5.79,6.25,.47]:[7.48,3.82,5,.47],draft?18:17,draft?'333333':sub);
     } else {
@@ -68,7 +69,7 @@ async function create(spec, draft = false, assets = {}) {
       type('subtitle',s.subtitle,[.74,2.05,11.8,.54],draft?18:19,draft?'444444':sub);
       if (s.kind === 'comparison') {
         const data = assets[s.asset];
-        if (!data) throw Error('需要提供对照图资源：' + s.asset);
+        if (!data) throw Error('Missing comparison image: ' + s.asset);
         const w = draft ? 6.1 : 7.22, h = w / 2, x = (13.333333-w)/2, y = draft ? 2.85 : 2.67;
         page.addImage({data,x,y,w,h,objectName:'comparison-image',altText:s.captions.join(' / ')});
         s.captions.forEach((v,i)=>type('caption-'+i,v,[x+i*w/2,y+h+.08,w/2,.36],draft?13:15,fg,{align:'center',bold:true}));
@@ -84,7 +85,7 @@ async function create(spec, draft = false, assets = {}) {
         const geom=draft?{x:.9,y:2.9,w:7.05,h:2.88}:{x:.75,y:2.94,w:7.4,h:3.06};
         if (!s.aside && !s.asideLabel) geom.w=11.83;
         if(s.kind === 'chart') {
-          page.addChart(ppt.ChartType.bar,[{name:s.seriesName||'数值',labels:s.labels,values:s.values}],{
+          page.addChart(ppt.ChartType.bar,[{name:s.seriesName||(lang.startsWith('zh')?'数值':'Value'),labels:s.labels,values:s.values}],{
             ...geom,objectName:'chart',barDir:'col',catAxisLabelFontFace:font,catAxisLabelFontSize:15,
             valAxisLabelFontFace:'Arial',valAxisLabelFontSize:13,catAxisLabelColor:muted,valAxisLabelColor:muted,
             chartColors:[teal],showLegend:false,showTitle:false,showValue:true,dataLabelPosition:'outEnd',

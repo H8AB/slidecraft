@@ -1,9 +1,13 @@
 {
- "series":"折页家居  /  商品运营","sourceMark":"收纳箱主图测试  ·  模拟数据","font":"PingFang SC",
- "slides":[
- {"kind":"cover","asset":"assets/wardrobe.jpg","section":"创意实验","title":"收纳箱主图测试","subtitle":"白底图与衣柜场景图的七天对照","display":"+0.9","caption":"个百分点 · 场景图点击率差值","notes":"虚构电商运营案例。决策问题：是否扩大场景图在搜索列表的测试流量。"},
- {"kind":"comparison","section":"测试设计","title":"同一件商品，两种搜索主图","subtitle":"按访客固定分组。价格、标题、优惠及落地页一致，每组各获 20,000 次曝光。","asset":"assets/main-image-pair.jpg","captions":["A  /  白底商品图","B  /  衣柜场景图"],"notes":"商品图片为 AI 生成的虚构示意图。两个版本同步测试 7 天。"},
- {"kind":"chart","section":"搜索点击","title":"场景图点击率高出 0.9 个百分点","subtitle":"在相同曝光量下，场景图带来 900 次点击，白底图为 720 次。","labels":["A  白底图","B  场景图"],"values":[0.036,0.045],"seriesName":"点击率","numberFormat":"0.0%","aside":"+25%","asideLabel":"点击率相对提升","note":"点击率 = 详情点击数 ÷ 搜索曝光数。两组相差 0.9 个百分点。","notes":"A 为 720/20000，B 为 900/20000。观察单位为事件，单个访客可产生多次曝光。"},
- {"kind":"table","section":"下单表现","title":"点击后的下单率均为 5.0%","subtitle":"场景图获得 45 个归因订单，比白底图多 9 个。","rows":[["版本","详情点击","归因订单","下单率"],["A  白底图","720","36","5.0%"],["B  场景图","900","45","5.0%"]],"aside":"+9","asideLabel":"场景图多获得的订单数","note":"归因窗口为点击后 24 小时，最后一天的点击也观察满 24 小时。","notes":"A 为 36/720，B 为 45/900。案例数据并未提供访客级方差或收入、退货表现。"},
- {"kind":"actions","section":"下周安排","title":"扩大场景图测试，保留白底图对照","subtitle":"先在这一款收纳箱的搜索流量中复验，再讨论全量换图。","items":[{"label":"商品运营","detail":"扩大场景图测试流量，保留同期白底图对照。"},{"label":"数据分析","detail":"跟踪点击率和每千次曝光订单数，保持归因口径一致。"},{"label":"复盘节点","detail":"一周后复核两项指标，再决定是否全量替换。"}],"notes":"此页为模拟提案。当前样本只覆盖一个商品和一个搜索入口。"}
- ]}
+  "series": "Fold Home / Merchandising",
+  "sourceMark": "Search image test  ·  Simulated data",
+  "font": "Arial",
+  "lang": "en-US",
+  "slides": [
+    {"kind":"cover","asset":"assets/wardrobe.jpg","section":"Creative testing","title":"The listing image test","subtitle":"One storage box. Two search images.","display":"+0.9","caption":"percentage points in click-through rate","notes":"Fictional seven-day search experiment. Decide whether to expand the wardrobe image test."},
+    {"kind":"comparison","section":"Test design","title":"The same product in two settings","subtitle":"Visitors stayed in one group. Each image received 20,000 impressions at the same price.","asset":"assets/main-image-pair.jpg","captions":["A  /  White background","B  /  Wardrobe setting"],"notes":"The listing title, offer and detail page were identical. Both variants ran for seven days. These are AI-generated product images."},
+    {"kind":"chart","section":"Search clicks","title":"The wardrobe image earned more clicks","subtitle":"With equal impressions, the wardrobe image drew 900 clicks and the white background drew 720.","labels":["A  White background","B  Wardrobe setting"],"values":[0.036,0.045],"seriesName":"Click-through rate","numberFormat":"0.0%","aside":"+25%","asideLabel":"relative lift in click-through rate","note":"Click-through rate = product clicks ÷ search impressions. The absolute difference is 0.9 percentage points.","notes":"720 / 20,000 = 3.6%. 900 / 20,000 = 4.5%. A visitor may generate multiple impressions."},
+    {"kind":"table","section":"Orders","title":"Both images converted 5% of clicks","subtitle":"The wardrobe image generated 45 attributed orders, compared with 36 for the white background.","rows":[["Image","Clicks","Orders","Order rate"],["A  White","720","36","5.0%"],["B  Wardrobe","900","45","5.0%"]],"aside":"+9","asideLabel":"additional orders with the wardrobe image","note":"Orders are attributed within 24 hours of a click, including clicks on the final day.","notes":"Orders per click: 36 / 720 and 45 / 900. The case does not include revenue or return data."},
+    {"kind":"actions","section":"Next test","title":"Expand the wardrobe test for one week","subtitle":"Keep a white-background control for this product before changing the listing for everyone.","items":[{"label":"Merchandising","detail":"Increase traffic to the wardrobe image. Keep a concurrent control."},{"label":"Analytics","detail":"Track click-through rate and orders per 1,000 impressions."},{"label":"Review","detail":"Compare both measures after one week and decide whether to roll out."}],"notes":"Proposed action for one product in search results. No claim of statistical significance."}
+  ]
+}

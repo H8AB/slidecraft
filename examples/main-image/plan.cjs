@@ -12,12 +12,12 @@ async function main() {
     const ops=[];
     function patch(name,props){
       const obj=page.objects.find(o=>o.name===name);
-      if(!obj) throw Error('示例不匹配：'+name);
+      if(!obj) throw Error('Missing example object: '+name);
       ops.push({id:obj.id,...props});
     }
     for(const n of ['series','source','section','page'])patch(n,{color:muted});
-    patch('title',{box:cover?[.7,1.52,6.5,1.2]:[.72,1.14,11.9,.82],size:cover?55:35,color:ink,bold:true});
-    patch('subtitle',{box:cover?[.75,2.76,6.4,.66]:[.75,2.02,11.85,.53],size:cover?24:18,color:muted});
+    patch('title',{box:cover?[.7,1.52,6.5,1.2]:[.72,1.14,11.9,.82],size:cover?40:33,color:ink,bold:true});
+    patch('subtitle',{box:cover?[.75,2.76,6.4,.66]:[.75,2.02,11.85,.53],size:cover?22:18,color:muted});
     if(cover){
       patch('hero-photo',{box:[7.27,1.18,5.37,5.37]});
       patch('display',{box:[.72,4.09,6.13,1.48],size:76,color:accent,bold:true});

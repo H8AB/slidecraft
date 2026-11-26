@@ -26,7 +26,13 @@ wb = """display_name: PPT 制作与视觉优化
 display_name_en: Slidecraft
 description_zh: 从材料制作可编辑 PPT，或按页面和对象优化已有演示稿。
 description_en: Create editable PowerPoint decks or restyle existing slides.
-version: 0.1.1
+examples_en:
+  - Create a five-slide merchandising review from my brief.
+  - Redesign this PowerPoint and preserve the original chart data.
+examples_zh:
+  - 根据简报制作五页商品运营复盘。
+  - 优化这份演示稿并保留原始图表数据。
+version: 0.2.0
 author: Slidecraft contributors
 """
 notice = text_notices()

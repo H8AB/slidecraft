@@ -1,30 +1,34 @@
-# Slidecraft · PPT 制作与视觉优化
+# Slidecraft
 
-用业务材料制作可编辑的 PowerPoint，或打开已有 PPTX，调整画面后另存副本。既可作为 Codex、Claude 和 WorkBuddy 的技能使用，也可以下载单文件网页，直接在浏览器中操作。
+[简体中文](README.zh-CN.md)
 
-**[使用指南](docs/使用指南.md)** · [下载离线网页版](downloads/slidecraft.html?raw=true) · [Codex / Claude 技能包](downloads/slidecraft-agent.zip?raw=true) · [WorkBuddy 技能包](downloads/slidecraft-workbuddy.zip?raw=true)
+Create an editable PowerPoint from a brief, or redesign the slides in an existing deck. Slidecraft works as an agent skill for Codex, Claude and WorkBuddy. The offline browser editor lets you try both workflows without installing a skill or entering an API key.
 
-## 电商案例：收纳箱主图 A/B 测试
+**[User guide](docs/guide.md)** · [Download the offline editor](https://github.com/H8AB/slidecraft/releases/latest/download/slidecraft.html) · [Codex and Claude skill](https://github.com/H8AB/slidecraft/releases/latest/download/slidecraft-agent.zip) · [WorkBuddy skill](https://github.com/H8AB/slidecraft/releases/latest/download/slidecraft-workbuddy.zip)
 
-![收纳箱主图测试的封面，左侧为草稿，右侧为改版结果](examples/main-image/cover-comparison.jpg)
+## Example: Which listing image earns more clicks?
 
-同款收纳箱的白底图和衣柜场景图各获 20,000 次模拟曝光。场景图点击率为 4.5%，白底图为 3.6%，点击后的下单率均为 5.0%。五页演示稿保留可编辑的图表、订单表和演讲备注。品牌与数据为虚构，商品图为 AI 生成。
+![The storage box test cover before and after redesign, with a larger product photograph and a more prominent click-through rate difference.](examples/main-image/cover-comparison.jpg)
 
-- **看制作**　[业务简报](examples/main-image/brief.md) → [从零制作的五页 PPTX](examples/main-image/01-created.pptx?raw=true)
-- **看改版**　[运营草稿](examples/main-image/02-before.pptx?raw=true) → [优化后 PPTX](examples/main-image/03-optimized.pptx?raw=true) · [逐页对照图](examples/main-image/comparison.jpg)
-- **复现过程**　[制作大纲](examples/main-image/deck.json) · [改版计划](examples/main-image/plan.json) · [核验记录](examples/main-image/核验记录.md) · [图片来源](examples/main-image/assets/PROVENANCE.md)
+A fictional homeware shop tested two photos of the same storage box. At 20,000 search impressions each, the wardrobe photo drew 900 clicks and the white-background photo drew 720. The wardrobe photo earned more clicks, while both groups converted 5% of clicks into orders. The five-slide review presents the photos, the numbers and the proposed next test.
 
-## 第一次使用
+- **Start from a brief** — [Read the source material](examples/main-image/brief.md) and [download the finished presentation](examples/main-image/01-created.pptx?raw=true).
+- **Redesign an existing deck** — Compare the [original draft](examples/main-image/02-before.pptx?raw=true) with the [redesigned presentation](examples/main-image/03-optimized.pptx?raw=true), or [view all five before-and-after pairs](examples/main-image/comparison.jpg).
+- **Inspect the work** — Look at the [slide outline](examples/main-image/deck.json), [object-level edit plan](examples/main-image/plan.json) and [verification notes](examples/main-image/verification.md).
 
-下载并在桌面浏览器打开 **slidecraft.html**。想制作新稿时，点击「载入电商案例」和「下载可编辑 PPTX」。想看改版时，切到「优化已有 PPT」，点击「试用电商改版案例」和「应用方案并下载副本」。两条流程都可离线使用。
+## Try it
 
-智能体用户可按[安装步骤和示例提示词](docs/使用指南.md)添加对应 ZIP。使用你自己的 PPT 时，先让智能体读取对象清单和渲染图，制定针对该文件的排版方案。平台安装方式已按官方文档整理，实测范围包括分发包执行器、命令行、桌面 Chrome 和 LibreOffice 渲染。
+Download and open **slidecraft.html** in a desktop browser. Under **Create a deck**, select **Load the ecommerce example**, then **Download editable PPTX**. Under **Restyle a deck**, select **Try the ecommerce redesign**, then **Apply plan and download a copy**. English is selected on the first visit. Choose **简体中文** in the header for the Chinese interface and examples.
 
-## 支持范围与开发
+For agent installation, sample prompts and command-line instructions, see the [user guide](docs/guide.md).
 
-支持制作封面、图片对照、指标、单系列图表、表格及行动页；优化已有稿时可调整背景、字号、颜色、粗细和原生对象的位置与大小。部分动画、嵌入对象和签名文件仅支持诊断。[文件接口与限制](skills/slidecraft/references/formats.md)
+## Editing and compatibility
 
-从仓库根目录运行以下命令可重新构建网页版、免 npm 安装的技能执行器及 ZIP。需要 Node.js 18+ 和 Python 3。
+Create covers, image comparisons, metrics, charts, tables and action slides. When restyling a deck, change the background, text styling and object positions while keeping native slide objects. Signed decks and some slides with animations or embedded objects are available for inspection only. [File formats and limits](skills/slidecraft/references/formats.md)
+
+## Build from source
+
+From the project root, with Node.js 18 or later and Python 3 installed:
 
 ```sh
 npm ci --prefix skills/slidecraft
@@ -32,6 +36,4 @@ node tools/build.cjs
 python3 tools/package.py
 ```
 
-构建产物位于 dist。项目代码采用 [MIT 许可](LICENSE)，发行包包含第三方依赖的许可声明。
-
-平台文档：[Agent Skills 规范](https://agentskills.io/specification) · [OpenAI](https://learn.chatgpt.com/docs/build-skills) · [Claude Code](https://code.claude.com/docs/en/skills) · [Claude 网页](https://support.claude.com/en/articles/12512180-use-skills-in-claude) · [WorkBuddy](https://open.workbuddy.cn/en/docs/skill)
+The browser editor and installable skill packages are written to `dist/`. Project code uses the [MIT license](LICENSE). Each distribution includes its dependency notices. The example uses fictional data and [AI-generated product photos](examples/main-image/assets/PROVENANCE.md).
