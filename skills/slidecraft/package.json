@@ -1,0 +1,10 @@
+{
+  "name": "slidecraft-local",
+  "version": "0.1.1",
+  "private": true,
+  "description": "Create and restyle editable PowerPoint presentations",
+  "license": "MIT",
+  "engines": {"node": ">=18"},
+  "dependencies": {"@xmldom/xmldom": "0.9.12", "jszip": "3.10.1", "pptxgenjs": "4.0.1"},
+  "devDependencies": {"esbuild": "0.25.12"}
+}
