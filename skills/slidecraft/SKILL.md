@@ -10,7 +10,7 @@ Use the language requested for the presentation. For existing decks, preserve th
 
 Infer the audience, the decision they need to make, and the available presentation time from the brief. Select a purpose and supporting evidence for each slide. Preserve units, time windows, source credits and the distinction between observations and proposals. Use the supplied brand or slide master when requested.
 
-Use the host's slide editor if it suits the material, or write a deck.json following [the format reference](references/formats.md). The local generator supports covers, image comparisons, metrics, charts, tables and actions. Deliver the editable file and review the rendered slides.
+Use the host's slide editor if it suits the material, or write a deck.json following [the format reference](references/formats.md). The local generator supports covers, image comparisons, metrics, charts, tables and actions. Show the slide story and a preview first, then deliver the editable presentation. Keep deck.json and commands as internal or advanced handoff material.
 
 ## Restyle a presentation
 
@@ -31,3 +31,5 @@ The release ZIP contains scripts/run.cjs and its dependencies. Node.js 18 or lat
 If file execution is unavailable, provide an outline or plan compatible with the offline browser editor. Distinguish that handoff from delivering an edited deck.
 
 Chinese references: [设计说明](references/design.zh-CN.md) · [文件接口](references/formats.zh-CN.md).
+
+When the user asks for a revision, accept ordinary requests such as “make slide three less crowded” without asking for shape IDs or a JSON edit plan. Public examples and trial suggestions must use fictional or public information, never a user's account details, chat history, private files, contacts, or local paths. Check slides, notes, and attachments before sharing.

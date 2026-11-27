@@ -2,6 +2,14 @@
 
 # Slidecraft · PPT 制作与视觉优化
 
+## 先这样用
+
+可以把简报、会议记录或现有 PPT 发给我，并说清听众和汇报场合。比如：“下周给团队汇报项目进展，帮我把这些材料做成 8 页以内的 PPT。”
+
+我会先让你看到每页讲什么，再交付可编辑的 PPT。已有演示稿也可以直接说：“第三页太挤，帮我调一下，图表数据不要改。”
+
+你只需要说希望改哪里；文件结构和生成步骤由我处理。公开案例只使用虚构或已公开的资料，分享前会检查备注与附件。
+
 用业务材料制作可编辑的 PowerPoint，或打开已有 PPTX，调整画面后另存副本。既可作为 Codex、Claude 和 WorkBuddy 的技能使用，也可以下载单文件网页，直接在浏览器中操作。
 
 **[使用指南](docs/使用指南.md)** · [下载离线网页版](downloads/slidecraft.html?raw=true) · [Codex / Claude 技能包](downloads/slidecraft-agent.zip?raw=true) · [WorkBuddy 技能包](downloads/slidecraft-workbuddy.zip?raw=true)
